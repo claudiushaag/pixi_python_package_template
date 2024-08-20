@@ -1,0 +1,9 @@
+# pyproject has to be reviewed, because it can contain scripts
+pyproject.toml @ClaudiusHaag
+
+# Workflows have to be reviewed by CH
+/.github/workflows/* @ClaudiusHaag
+
+# Changes to docs have to be reviewed by CH, because they will be built on runner
+/docs/conf.py @ClaudiusHaag
+/docs/scripts/* @ClaudiusHaag

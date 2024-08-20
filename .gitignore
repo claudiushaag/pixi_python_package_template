@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+__pypackages__/
+build/
+dist/
+MANIFEST
+
+# Documentation
+docs/_build
+
+# Misc
+.vscode
+# pixi environments
+.pixi
+*.egg-info
+
+# Sphinx documentation
+docs/_build/
+docs/generated/
+
+# pytest-cov
+.coverage
+coverage

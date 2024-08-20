@@ -1,0 +1,61 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Docs
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    # inputs:
+    #   message:
+    #     description: "A message, displayed on the runner"
+
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+# `contents` is for permission to the contents of the repository.
+# `pull-requests` is for permission to pull request
+# permissions:
+  # contents: read
+  # checks: write
+  # pull-requests: write
+
+jobs:
+  build:
+    name: build docs
+
+    runs-on: [ self-hosted ]
+    permissions:                # Job-level permissions configuration starts here
+      contents: write           # 'write' access to repository contents
+      # pull-requests: write      # 'write' access to pull requests
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Pixi install
+        uses: prefix-dev/setup-pixi@v0.8.0
+        with:
+          pixi-version: v0.26.1
+          cache: true
+          auth-host: prefix.dev
+          auth-token: ${{ secrets.PREFIX_DEV_TOKEN }}
+          log-level: vvv
+          post-cleanup: true
+          pixi-bin-path: ${{ runner.temp }}/bin/pixi
+          manifest-path: pyproject.toml
+          environments: docs
+      - name: Sphinx
+        run: |
+          pixi run test
+          # copying current coverage report website
+          mkdir -p docs/_static/test_cov
+          cp -rT coverage/html/ docs/_static/test_cov || { printf "Failed to copy files of coverage report!\n" >&2; exit 1; }
+          pixi run build_docs
+      - name: Set up Git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Push docs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: "docs/scripts/push_docs.sh"
+        shell: bash
