@@ -33,6 +33,7 @@ extensions = ['sphinx.ext.duration',
               "sphinx.ext.githubpages",
               "nbsphinx",
               "sphinx.ext.mathjax",
+              "sphinxarg.ext",
 ]
 
 # napoleon for google-style docstrings: https://sphinxcontrib-napoleon.readthedocs.io/en/latest/

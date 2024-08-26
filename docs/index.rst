@@ -13,6 +13,7 @@ Template!
    :caption: Contents:
 
    usage
+   cli
    module
    test_cov
 

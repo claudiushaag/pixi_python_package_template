@@ -1,0 +1,88 @@
+[project]
+authors = [{name = "Claudius Haag", email = "claudius.haag@mib.uni-stuttgart.de"}]
+dependencies = []
+description = "Template"
+name = "Template"
+requires-python = ">= 3.11"
+version = "0.1.0"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[tool.pixi.dependencies]
+
+[tool.pixi.pypi-dependencies]
+# template = { path = ".", editable = true }
+
+[tool.pixi.feature.docs.tasks]
+build_docs = "sphinx-build -M html docs docs/_build"
+# push_docs = "bash docs/scripts/update_docs_by_hand.sh"
+
+[tool.pixi.feature.docs.target.win-64.tasks]
+# push_docs = "powershell docs/scripts/update_docs_by_hand.ps1"
+
+[tool.pixi.feature.test.tasks]
+test = "pytest --junitxml=coverage/junit/test-results.xml --cov=hdf5_graph --cov-report=term --cov-report=xml:coverage/coverage.xml --cov-report=html:coverage/html"
+lint = "ruff check"
+lint_fix = "ruff check --fix"
+lint_gh = "ruff check --output-format=github"
+lint_docs_gh = "ruff check --select D,D401 --ignore D417 --output-format=github"
+format = "ruff format"
+format_diff = "ruff format --diff"
+
+[tool.pixi.feature.docs.dependencies]
+sphinx = "*"
+pydata-sphinx-theme = "*"
+sphinxcontrib-mermaid = "*"
+nbsphinx = "*"
+sphinx-argparse = "*"
+
+[tool.pixi.feature.test.dependencies]
+pytest = "*"
+pytest-cov = "*"
+ruff = "*"
+
+[tool.pixi.environments]
+default = {features = [], solve-group = "default"}
+docs = {features = ["docs"], solve-group = "default"}
+test = {features = ["test"], solve-group = "default"}
+# all = {features = ["test", "docs"], solve-group = "default"}
+
+[tool.ruff.lint]
+select = [
+    # Aparently, standard:
+    "E4",
+    "E7",
+    "E9",
+    "F",
+    # # pycodestyle
+    # "E",
+    # # Pyflakes
+    # "F",
+    # # pyupgrade
+    # "UP",
+    # # flake8-bugbear
+    # "B",
+    # # flake8-simplify
+    # "SIM",
+    # # isort
+    # "I",
+    # # Setting for docstrings, explicit in task lint_docs_gh
+    # # Pydocstyle
+    # "D",
+    # # Augment the convention by requiring an imperative mood for all docstrings.
+    # "D401",
+]
+
+ignore = [
+    # Relax the convention by _not_ requiring documentation for every function parameter.
+    "D417",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
