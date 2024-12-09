@@ -19,9 +19,19 @@ platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
 [tool.pixi.pypi-dependencies]
 # template = { path = ".", editable = true }
 
+[tool.pixi.feature.build.dependencies]
+twine = "*"
+
+[tool.pixi.feature.build.pypi-dependencies]
+build = "*"
+
+[tool.pixi.feature.build.tasks]
+build_exes = {cmd= "rm -r dist; python -m build"}
+push_to_pypi = "python -m twine upload --verbose --repository testpypi dist/*"
+
 [tool.pixi.feature.docs.tasks]
 build_docs = "sphinx-build -M html docs docs/_build"
-# push_docs = "bash docs/scripts/update_docs_by_hand.sh"
+push_docs = "bash docs/scripts/update_docs_by_hand.sh"
 
 [tool.pixi.feature.docs.target.win-64.tasks]
 # push_docs = "powershell docs/scripts/update_docs_by_hand.ps1"
@@ -34,6 +44,9 @@ lint_gh = "ruff check --output-format=github"
 lint_docs_gh = "ruff check --select D,D401 --ignore D417 --output-format=github"
 format = "ruff format"
 format_diff = "ruff format --diff"
+typecheck = "mypy src"
+pre-commit-all = "pre-commit run --all-files"
+pre-commit-install = "pre-commit install"
 
 [tool.pixi.feature.docs.dependencies]
 sphinx = "*"
@@ -46,43 +59,74 @@ sphinx-argparse = "*"
 pytest = "*"
 pytest-cov = "*"
 ruff = "*"
+pre-commit = "*"
+mypy = "*"
 
 [tool.pixi.environments]
+build = {features = ["build"]}
 default = {features = [], solve-group = "default"}
-docs = {features = ["docs"], solve-group = "default"}
-test = {features = ["test"], solve-group = "default"}
-# all = {features = ["test", "docs"], solve-group = "default"}
+utility = {features = ["test","docs"], solve-group = "default"}
 
 [tool.ruff.lint]
 select = [
-    # Aparently, standard:
-    "E4",
-    "E7",
-    "E9",
-    "F",
-    # # pycodestyle
-    # "E",
-    # # Pyflakes
-    # "F",
-    # # pyupgrade
-    # "UP",
-    # # flake8-bugbear
-    # "B",
-    # # flake8-simplify
-    # "SIM",
-    # # isort
-    # "I",
-    # # Setting for docstrings, explicit in task lint_docs_gh
-    # # Pydocstyle
-    # "D",
-    # # Augment the convention by requiring an imperative mood for all docstrings.
-    # "D401",
+    # General errors and warnings
+    "E4",  # Indentation and alignment issues
+    "E7",  # Syntax errors
+    "E9",  # Runtime errors
+    "F",   # Pyflakes: undefined names, unused imports, etc.
+
+    # Style and conventions
+    "E",    # Pycodestyle: overall style conventions
+    "B",    # flake8-bugbear: common pitfalls and potential bugs
+    "SIM",  # flake8-simplify: simplifiable constructs and redundant code
+    "C90",  # flake8-comprehensions: encourages proper use of comprehensions
+
+    # Python modernization
+    "UP",   # pyupgrade: encourages modern Python syntax
+    "A",    # flake8-annotations: enforces type hints for better code clarity
+    "PT",   # flake8-pytest-style: improves pytest test readability and conventions
+
+    # Imports
+    "I",    # isort: ensures import order
+    "TID",  # flake8-tidy-imports: removes unused or duplicate imports
+
+    # Complexity
+    "C",    # McCabe: limits code complexity (cyclomatic complexity)
+    "PLR",  # flake8-pluralize: flags incorrect pluralization in variable names
+
+    # Docstring standards
+    "D",     # Pydocstyle: general docstring conventions
+    "D401",  # Enforces imperative mood for docstrings
+    "RUF",   # ruff-docstrings: additional docstring quality checks
+
+    # NumPy-specific
+    "NPY",   # numpy-style: enforces proper NumPy conventions and idioms
+    "NPY001",# Enforces correct use of array shapes and dimensions
+    "NPY002",# Flags manual creation of identity matrices, suggesting np.eye or np.identity
+
+    # Pandas-specific
+    "PD",    # pandas-vet: ensures proper usage of Pandas API
+    "PD901", # Encourages vectorized operations over DataFrame.apply or loops
+    "PD002", # Flags usage of .ix, recommending modern alternatives (.loc or .iloc)
+
+    # Pathlib-specific
+    "PL",    # pathlib-pure: promotes using Pathlib instead of os.path
+    "PL001", # Flags os.path.join, suggesting Pathlib's "/" operator
+    "PL002", # Flags os.path.exists, suggesting Pathlib's .exists() method
 ]
 
 ignore = [
-    # Relax the convention by _not_ requiring documentation for every function parameter.
-    "D417",
+    # Allow missing parameter documentation in docstrings
+    "D417",  # Relax strict requirements for documenting all parameters
+    "ANN101", # Do not require type annotations for self/cls in methods
+    "SIM117", # Allow comparisons to literal True/False for explicit clarity
+    "NPY003", # Allow slicing without explicitly defining start/stop/step (e.g., [:])
+    "PD999",  # Ignore experimental or deprecated Pandas rules flagged by pandas-vet
 ]
 
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+exclude = []
+ignore_missing_imports = true
