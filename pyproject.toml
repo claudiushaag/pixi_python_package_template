@@ -116,7 +116,6 @@ select = [
 ignore = [
     # Allow missing parameter documentation in docstrings
     "D417",  # Relax strict requirements for documenting all parameters
-    "ANN101", # Do not require type annotations for self/cls in methods
     "SIM117", # Allow comparisons to literal True/False for explicit clarity
     "NPY003", # Allow slicing without explicitly defining start/stop/step (e.g., [:])
     "E501",  # personal preference
