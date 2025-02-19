@@ -110,9 +110,7 @@ select = [
     "PD002", # Flags usage of .ix, recommending modern alternatives (.loc or .iloc)
 
     # Pathlib-specific
-    "PL",    # pathlib-pure: promotes using Pathlib instead of os.path
-    "PL001", # Flags os.path.join, suggesting Pathlib's "/" operator
-    "PL002", # Flags os.path.exists, suggesting Pathlib's .exists() method
+    "PTH",    # pathlib-pure: promotes using Pathlib instead of os.path
 ]
 
 ignore = [
@@ -121,7 +119,7 @@ ignore = [
     "ANN101", # Do not require type annotations for self/cls in methods
     "SIM117", # Allow comparisons to literal True/False for explicit clarity
     "NPY003", # Allow slicing without explicitly defining start/stop/step (e.g., [:])
-    "PD999",  # Ignore experimental or deprecated Pandas rules flagged by pandas-vet
+    "E501",  # personal preference
 ]
 
 [tool.mypy]
