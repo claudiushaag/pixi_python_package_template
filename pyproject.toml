@@ -1,5 +1,5 @@
 [project]
-authors = [{name = "Claudius Haag", email = "claudius.haag@mib.uni-stuttgart.de"}]
+authors = [{name = "Author", email = "author@author.com"}]
 dependencies = []
 description = "Template"
 name = "Template"
@@ -37,7 +37,7 @@ push_docs = "bash docs/scripts/update_docs_by_hand.sh"
 # push_docs = "powershell docs/scripts/update_docs_by_hand.ps1"
 
 [tool.pixi.feature.test.tasks]
-test = "pytest --junitxml=coverage/junit/test-results.xml --cov=hdf5_graph --cov-report=term --cov-report=xml:coverage/coverage.xml --cov-report=html:coverage/html"
+test = "pytest --junitxml=coverage/junit/test-results.xml --cov=FIXME --cov-report=term --cov-report=xml:coverage/coverage.xml --cov-report=html:coverage/html"
 lint = "ruff check"
 lint_fix = "ruff check --fix"
 lint_gh = "ruff check --output-format=github"
