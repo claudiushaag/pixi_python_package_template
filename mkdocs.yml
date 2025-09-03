@@ -1,0 +1,75 @@
+site_name: Pixi Python Template
+# site_url: FIXME
+# repo_url: FIXME
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2025 FIXME
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: cyan
+  features:
+    - content.tabs.link
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.tooltips
+    - content.code.select
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+  icon:
+    annotation: material/chevron-right-circle
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list  # must come before mkdocs-click!
+  - md_in_html
+  - mkdocs-click
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+  - macros:
+      module_name: docs/scripts/macros
+  - git-revision-date-localized:
+      enable_creation_date: true
+  - exporter:
+      formats:
+            pdf:
+              enabled: !ENV [MKDOCS_EXPORTER_PDF_ENABLED, true]
+              explicit: false
+              concurrency: 4
+              aggregator:
+                enabled: true
+                output: documentation.pdf
+                covers: limits
+      buttons:
+          - title: Download as PDF
+            icon: material-file-download-outline
+            enabled: !!python/name:mkdocs_exporter.formats.pdf.buttons.download.enabled
+            attributes: !!python/name:mkdocs_exporter.formats.pdf.buttons.download.attributes
+
+nav:
+  - Home: index.md
+  - Documentation:
+    - Updating: mkdocs.md
+    - Markdown: markdown.md
