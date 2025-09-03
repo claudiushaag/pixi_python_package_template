@@ -70,6 +70,7 @@ plugins:
 
 nav:
   - Home: index.md
+  - CLI: cli.md
   - Documentation:
     - Updating: mkdocs.md
     - Markdown: markdown.md

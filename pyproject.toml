@@ -5,16 +5,34 @@ description = "Template"
 name = "Template"
 requires-python = ">= 3.11"
 version = "0.1.0"
+scripts = { hello = "project.cli:hello"}
 
 [build-system]
 build-backend = "hatchling.build"
 requires = ["hatchling"]
 
-[tool.pixi.project]
+[tool.hatch.build.targets.wheel]
+packages = ["project"]
+
+[tool.pixi.workspace]
 channels = ["conda-forge"]
 platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+preview = ["pixi-build"]
+
+[tool.pixi.package]
+name = "template_project"
+
+[tool.pixi.package.build]
+backend = { name = "pixi-build-python", version = "0.3.*" }
+
+[tool.pixi.package.host-dependencies]
+hatchling = "*"
+
+[tool.pixi.package.run-dependencies]
+click = "*"
 
 [tool.pixi.dependencies]
+template_project = { path = "."}
 
 [tool.pixi.pypi-dependencies]
 # template = { path = ".", editable = true }
