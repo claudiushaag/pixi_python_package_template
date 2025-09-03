@@ -67,10 +67,12 @@ plugins:
             icon: material-file-download-outline
             enabled: !!python/name:mkdocs_exporter.formats.pdf.buttons.download.enabled
             attributes: !!python/name:mkdocs_exporter.formats.pdf.buttons.download.attributes
+  - mkdocstrings
 
 nav:
   - Home: index.md
   - CLI: cli.md
+  - API: api.md
   - Documentation:
     - Updating: mkdocs.md
     - Markdown: markdown.md

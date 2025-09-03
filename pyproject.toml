@@ -72,6 +72,7 @@ mkdocs-macros-plugin = ">=1.3.7,<2"
 markupsafe = "*"
 mkdocs-git-revision-date-localized-plugin = "*"
 mkdocs-exporter = "*"
+mkdocstrings-python = "*"
 
 [tool.pixi.feature.test.dependencies]
 pytest = "*"
