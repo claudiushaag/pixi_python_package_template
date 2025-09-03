@@ -14,5 +14,5 @@ Different environments are setup for developing, testing, publishing, documentin
 - Package-Manager: Pixi
 - Linter&Formatter: Ruff
 - Type-Checker: MyPy
-- Documenting: Sphinx
+- Documenting: Mkdocs
 - Testing: Pytest
